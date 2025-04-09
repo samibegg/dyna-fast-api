@@ -15,7 +15,7 @@ await fastify.register(cors, {
     } else {
       cb(new Error("Not allowed by CORS"));
     }
-  }
+  },
   methods: ['GET', 'POST'], 
   credentials: true
 })
