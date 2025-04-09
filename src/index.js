@@ -15,6 +15,12 @@ async function routes (fastify, options) {
   fastify.get('/', async (request, reply) => {
     return { hello: 'world' }
   })
+
+  // About route
+  fastify.get('/about', async (request, reply) => {
+    return { info: 'This is the about page' };
+  });
+
 }
 
 export default routes;
