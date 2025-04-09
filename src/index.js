@@ -6,20 +6,10 @@ const fastify = Fastify({
   logger: true
 })
 
-// Declare a route
-fastify.get('/', function (request, reply) {
-  reply.send({ hello: 'world' })
-})
-
 async function routes (fastify, options) {
   fastify.get('/', async (request, reply) => {
-    return { hello: 'world' }
+    return { Welcome: 'Dynatrader' }
   })
-
-  // About route
-  fastify.get('/about', async (request, reply) => {
-    return { info: 'This is the about page' };
-  });
 
   fastify.get('/api/journeysByDate', async (request, reply) => {
     try {
@@ -34,6 +24,53 @@ async function routes (fastify, options) {
     }
   });
 
+  fastify.get('/api/ordersByDate', async (request, reply) => {
+    try {
+      const { s, e } = request.query; // Accessing query parameters `s` and `e`
+      if (!s || !e) {
+        return reply.status(400).send({ error: 'Missing start or end date' });
+      }
+      const data = await getOrdersByDate(s, e); 
+      reply.send(data);
+    } catch (err) {
+      reply.status(500).send({ error: 'Error orders journeys by date' });
+    }
+  });
+
+  fastify.get('/api/ordersByTradeId', async (request, reply) => {
+    try {
+      const { i } = request.query; // Accessing query parameter `i`
+      if (!i) {
+        return reply.status(400).send({ error: 'Missing id' });
+      }
+      const data = await getOrdersByTradeId(i); 
+      reply.send(data);
+    } catch (err) {
+      reply.status(500).send({ error: 'Error orders by ID' });
+    }
+  });
+  
+  fastify.get('/api/journeyByOrderId', async (request, reply) => {
+    try {
+      const { j } = request.query; // Accessing query parameter `i`
+      if (!j) {
+        return reply.status(400).send({ error: 'Missing id' });
+      }
+      const data = await getJourneyByOrderId(j); 
+      reply.send(data);
+    } catch (err) {
+      reply.status(500).send({ error: 'Error journeys by ID' });
+    }
+  });
+
+  fastify.get('/api/futuresOptions', async (request, reply) => {
+    try {
+      const data = await getFuturesOptions(); 
+      reply.send(data);
+    } catch (err) {
+      reply.status(500).send({ error: 'Error futures options' });
+    }
+  });
 }
 
 export default routes;
@@ -57,6 +94,11 @@ fastify.listen({ port: 5000 }, (err) => {
     fastify.log.error(err)
     process.exit(1)
   }
+})
+
+// Default route
+fastify.get('/', function (request, reply) {
+  reply.send({ Welcome: 'Dynatrader' })
 })
 
 // API endpoint to fetch all journeys by date range
