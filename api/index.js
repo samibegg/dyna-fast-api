@@ -15,12 +15,12 @@ const dbName = 'trades';
 const client = new MongoClient(url);
 console.log('URL: '+url);
 
-fastify.listen({ port: 5000 }, (err) => {
-  if (err) {
-    fastify.log.error(err)
-    process.exit(1)
-  }
-})
+//fastify.listen({ port: 5000 }, (err) => {
+//  if (err) {
+//    fastify.log.error(err)
+//    process.exit(1)
+//  }
+//})
 
 fastify.get('/api/', function (request, reply) {
   reply.send({ hello: 'world' })
