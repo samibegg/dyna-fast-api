@@ -30,6 +30,11 @@ fastify.get('/', function (request, reply) {
   reply.send({ hello: 'world' })
 })
 
+module.exports = async function handler(req, res) {
+  await fastify.ready();
+  fastify.server.emit('request', req, res);
+};
+
 // API endpoint to fetch all journeys by date range
 fastify.get('/api/journeysByDate', async (request, reply) => {
   try {
