@@ -21,6 +21,21 @@ await fastify.register(cors, {
 })
 
 async function routes (fastify, options) {
+
+  // Use CORS middleware to allow requests from the frontend
+  await fastify.register(cors, {
+    origin: (origin, cb) => {
+      const allowedOrigins = ['http://localhost:3000', 'https://samibegg.com'];
+      if (!origin || allowedOrigins.includes(origin)) {
+        cb(null, true);
+      } else {
+        cb(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ['GET', 'POST'], 
+    credentials: true
+  })
+
   fastify.get('/', async (request, reply) => {
     return { Welcome: 'Dynatrader' }
   })
