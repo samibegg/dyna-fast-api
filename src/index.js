@@ -1,6 +1,23 @@
-const fastify = require('fastify')({ logger: true })
-const cors = require('@fastify/cors');
-const { MongoClient } = require('mongodb');
+import Fastify from 'fastify'
+import cors from '@fastify/cors';
+import { MongoClient } from 'mongodb';
+
+const fastify = Fastify({
+  logger: true
+})
+
+// Declare a route
+fastify.get('/', function (request, reply) {
+  reply.send({ hello: 'world' })
+})
+
+async function routes (fastify, options) {
+  fastify.get('/', async (request, reply) => {
+    return { hello: 'world' }
+  })
+}
+
+export default routes;
 
 // Use CORS middleware to allow requests from the frontend
 fastify.register(cors, {
@@ -8,32 +25,20 @@ fastify.register(cors, {
 })
 
 // MongoDB connection URL
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 const url = process.env.TRADEDB_URI;
 const dbName = 'trades'; 
 const client = new MongoClient(url);
 console.log('URL: '+url);
 
-//fastify.listen({ port: 5000 }, (err) => {
-//  if (err) {
-//    fastify.log.error(err)
-//    process.exit(1)
-//  }
-//})
-
-fastify.get('/api/', function (request, reply) {
-  reply.send({ hello: 'world' })
+fastify.listen({ port: 5000 }, (err) => {
+  if (err) {
+    fastify.log.error(err)
+    process.exit(1)
+  }
 })
-
-fastify.get('/', function (request, reply) {
-  reply.send({ hello: 'world' })
-})
-
-module.exports = async function handler(req, res) {
-  await fastify.ready();
-  fastify.server.emit('request', req, res);
-};
 
 // API endpoint to fetch all journeys by date range
 fastify.get('/api/journeysByDate', async (request, reply) => {

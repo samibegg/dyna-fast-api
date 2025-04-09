@@ -1,4 +1,7 @@
 {
+  "name": "dyna-fast-api",
+  "version": "1.0.0",
+  "type": "module",
   "dependencies": {
     "@fastify/cors": "^11.0.1",
     "cors": "^2.8.5",
