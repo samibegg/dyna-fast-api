@@ -21,6 +21,19 @@ async function routes (fastify, options) {
     return { info: 'This is the about page' };
   });
 
+  fastify.get('/api/journeysByDate', async (request, reply) => {
+    try {
+      const { s, e } = request.query; // Accessing query parameters `s` and `e`
+      if (!s || !e) {
+        return reply.status(400).send({ error: 'Missing start or end date' });
+      }
+      const data = await getJourneysByDate(s, e); 
+      reply.send(data);
+    } catch (err) {
+      reply.status(500).send({ error: 'Error fetching journeys by date' });
+    }
+  });
+
 }
 
 export default routes;
