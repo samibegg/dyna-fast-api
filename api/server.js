@@ -22,6 +22,14 @@ fastify.listen({ port: 5000 }, (err) => {
   }
 })
 
+fastify.get('/api/', function (request, reply) {
+  reply.send({ hello: 'world' })
+})
+
+fastify.get('/', function (request, reply) {
+  reply.send({ hello: 'world' })
+})
+
 // API endpoint to fetch all journeys by date range
 fastify.get('/api/journeysByDate', async (request, reply) => {
   try {
