@@ -11,7 +11,7 @@ async function routes (fastify, options) {
   // Use CORS middleware to allow requests from the frontend
   await fastify.register(cors, {
     origin: (origin, cb) => {
-      const allowedOrigins = ['http://localhost:5173', 'https://samibegg.com', 'https://risk-dashboard-gamma.vercel.app'];
+      const allowedOrigins = ['http://localhost:5173', 'https://risk-dashboard.samibegg.com', 'https://risk-dashboard-gamma.vercel.app'];
       if (!origin || allowedOrigins.includes(origin)) {
         cb(null, true);
       } else {
